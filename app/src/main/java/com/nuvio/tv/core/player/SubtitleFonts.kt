@@ -46,7 +46,7 @@ class SubtitleFontStore private constructor(private val dir: File) {
 
     @Synchronized
     fun import(fileName: String, bytes: ByteArray): SubtitleFont {
-        require(isSupportedSubtitleFont(fileName, bytes))
+        require(isSupportedFontFile(fileName, bytes))
         val current = mutableFonts.value
         current.firstOrNull { file(it.id).takeIf(File::isFile)?.readBytes()?.contentEquals(bytes) == true }
             ?.let { return it }
@@ -112,7 +112,10 @@ class SubtitleFontStore private constructor(private val dir: File) {
     }
 }
 
-fun isSupportedSubtitleFont(fileName: String, bytes: ByteArray): Boolean {
+fun isSupportedSubtitleFont(fileName: String, bytes: ByteArray): Boolean =
+    isSupportedFontFile(fileName, bytes)
+
+fun isSupportedFontFile(fileName: String, bytes: ByteArray): Boolean {
     if (fileName.substringAfterLast('.', "").lowercase() !in setOf("ttf", "otf")) return false
     if (bytes.size !in 12..SubtitleFonts.MAX_BYTES) return false
     val signature = bytes.take(4).map { it.toInt() and 255 }
