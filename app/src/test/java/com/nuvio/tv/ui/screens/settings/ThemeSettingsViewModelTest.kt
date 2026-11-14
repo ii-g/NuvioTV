@@ -1,6 +1,8 @@
 package com.nuvio.tv.ui.screens.settings
 
+import android.content.Context
 import com.nuvio.tv.MainDispatcherRule
+import com.nuvio.tv.core.player.UiFont
 import com.nuvio.tv.data.local.ThemeDataStore
 import com.nuvio.tv.data.repository.MemberAccessRepository
 import com.nuvio.tv.domain.model.AppFont
@@ -12,10 +14,13 @@ import com.nuvio.tv.domain.model.SettingsUiStyle
 import com.nuvio.tv.domain.model.ThemeSelection
 import com.nuvio.tv.launcher.AppIconManager
 import com.nuvio.tv.launcher.AppIconSettingsState
+import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import java.io.File
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runCurrent
@@ -35,15 +40,27 @@ class ThemeSettingsViewModelTest {
     private val solid = CustomThemeColors.solid(0x445566)
     private val selection = MutableStateFlow(ThemeSelection(AppTheme.CUSTOM, gradient))
     private val access = MutableStateFlow(MemberAccess.None)
+    private val customFontId = MutableStateFlow<String?>(null)
+    // UiFontStore.get(context) reads the font index from context.applicationContext.filesDir
+    // at ViewModel construction; point it at a scratch dir so no test writes land in the repo.
+    private val context: Context = mockk {
+        every { applicationContext } returns mockk {
+            every { filesDir } returns File(System.getProperty("java.io.tmpdir"), "nuvio-theme-settings-test")
+        }
+    }
     private val store = mockk<ThemeDataStore> {
         every { themeSelection } returns selection
         every { selectedFont } returns flowOf(AppFont.INTER)
+        every { selectedCustomUiFontId } returns customFontId
         every { amoledMode } returns flowOf(false)
         every { amoledSurfacesMode } returns flowOf(false)
         every { settingsUiStyle } returns flowOf(SettingsUiStyle.CLASSIC)
         coEvery { setCustomTheme(any()) } coAnswers {
             selection.value = ThemeSelection(AppTheme.CUSTOM, firstArg())
         }
+        coEvery { setFont(any()) } just Runs
+        coEvery { setCustomUiFontId(any()) } coAnswers { customFontId.value = firstArg() }
+        coEvery { setCustomUiFontId(null) } coAnswers { customFontId.value = null }
     }
 
     @Test
@@ -131,9 +148,44 @@ class ThemeSettingsViewModelTest {
         assertEquals(solid, viewModel.uiState.value.customThemeColors)
     }
 
+    @Test
+    fun selectCustomFontSetsCustomIdAndLeavesBuiltInFontUntouched() = runTest {
+        val viewModel = createViewModel()
+        runCurrent()
+        val font = UiFont("custom-11111111-1111-1111-1111-111111111111", "Test Font")
+
+        viewModel.onEvent(ThemeSettingsEvent.SelectCustomFont(font))
+        runCurrent()
+
+        assertEquals(font.id, viewModel.uiState.value.selectedCustomUiFontId)
+        assertEquals(AppFont.INTER, viewModel.uiState.value.selectedFont)
+        coVerify(exactly = 1) { store.setCustomUiFontId(font.id) }
+        coVerify(exactly = 0) { store.setFont(any()) }
+    }
+
+    @Test
+    fun selectBuiltInFontClearsPreviouslySelectedCustomFont() = runTest {
+        customFontId.value = "custom-11111111-1111-1111-1111-111111111111"
+        val viewModel = createViewModel()
+        runCurrent()
+        assertEquals(customFontId.value, viewModel.uiState.value.selectedCustomUiFontId)
+
+        viewModel.onEvent(ThemeSettingsEvent.SelectFont(AppFont.INTER))
+        runCurrent()
+
+        coVerify(exactly = 1) { store.setFont(AppFont.INTER) }
+        coVerify(exactly = 1) { store.setCustomUiFontId(null) }
+        assertEquals(null, viewModel.uiState.value.selectedCustomUiFontId)
+        assertEquals(AppFont.INTER, viewModel.uiState.value.selectedFont)
+    }
+
+    // No test for RemoveCustomFont: it switches to Dispatchers.IO (a real dispatcher the
+    // MainDispatcherRule does not replace, so its completion cannot be awaited with
+    // runCurrent()/advanceUntilIdle()) and it calls the real static UiFontStore singleton,
+    // which would write the font index to disk. It needs a seam in production code first.
     private fun createViewModel(): ThemeSettingsViewModel {
         val members = mockk<MemberAccessRepository> { every { access } returns this@ThemeSettingsViewModelTest.access }
         val icons = mockk<AppIconManager> { every { state } returns MutableStateFlow(AppIconSettingsState()) }
-        return ThemeSettingsViewModel(store, members, icons)
+        return ThemeSettingsViewModel(context, store, members, icons)
     }
 }
