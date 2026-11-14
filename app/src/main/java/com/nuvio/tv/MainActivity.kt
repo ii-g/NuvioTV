@@ -525,20 +525,26 @@ open class MainActivity : ComponentActivity() {
                 // Group flows into two batches to reduce intermediate flow allocations.
                 // Each batch uses a single combine() instead of chaining .combine() calls,
                 // which avoids N intermediate flow objects and redundant emissions on startup.
-                val themeAndExperienceFlow = combine(
-                    activeThemeFlow,
+                // Combine the two font flows first: combine() with six flows does not
+                // resolve here (build #9), so the outer combine keeps the five-flow
+                // shape that built green on the base.
+                val fontFlow = combine(
                     themeDataStore.selectedFont,
                     themeDataStore.selectedCustomUiFontId,
+                ) { font, customUiFontId -> font to customUiFontId }
+                val themeAndExperienceFlow = combine(
+                    activeThemeFlow,
+                    fontFlow,
                     themeDataStore.amoledMode,
                     themeDataStore.amoledSurfacesMode,
                     experienceModeDataStore.mode,
-                ) { themeAndAccess, font, customUiFontId, amoledMode, amoledSurfacesMode, experienceMode ->
+                ) { themeAndAccess, fontAndCustomId, amoledMode, amoledSurfacesMode, experienceMode ->
                     MainUiPrefs(
                         theme = themeAndAccess.first.theme ?: AppTheme.WHITE,
                         customThemeColors = themeAndAccess.first.customColors,
                         memberAccess = themeAndAccess.second,
-                        font = font,
-                        customUiFontId = customUiFontId,
+                        font = fontAndCustomId.first,
+                        customUiFontId = fontAndCustomId.second,
                         amoledMode = amoledMode,
                         amoledSurfacesMode = amoledSurfacesMode,
                         experienceMode = experienceMode,

@@ -171,8 +171,9 @@ class ThemeSettingsViewModel @Inject constructor(
                 }
         }
         viewModelScope.launch {
+            // No distinctUntilChanged(): StateFlow already emits only on change, and
+            // calling it on a StateFlow is a deprecated no-op that fails the build.
             store.fonts
-                .distinctUntilChanged()
                 .collectLatest { fonts ->
                     _uiState.update { state ->
                         if (state.customFonts == fonts) state else state.copy(customFonts = fonts)
