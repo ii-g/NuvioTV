@@ -144,6 +144,7 @@ import com.nuvio.tv.core.auth.DeviceSessionRegistration
 import com.nuvio.tv.core.deeplink.DeepLinkHandler
 import com.nuvio.tv.core.deeplink.DeepLinkParser
 import com.nuvio.tv.core.player.PlayerWindowBackdrop
+import com.nuvio.tv.core.player.UiFontStore
 import com.nuvio.tv.core.party.PartyRepository
 import com.nuvio.tv.core.profile.ProfileManager
 import com.nuvio.tv.core.sync.ProfileSyncService
@@ -199,6 +200,7 @@ import com.nuvio.tv.ui.theme.NuvioTheme
 import com.nuvio.tv.ui.theme.ThemeColors
 import com.nuvio.tv.ui.theme.accentBrush
 import com.nuvio.tv.ui.theme.brandWordmarkResource
+import com.nuvio.tv.ui.theme.customUiFontFamily
 import com.nuvio.tv.ui.util.LocalFastHorizontalNavigationEnabled
 import com.nuvio.tv.ui.util.LocalRecompositionHighlighterEnabled
 import com.nuvio.tv.ui.util.rememberDrawerItemFocusRequesters
@@ -247,6 +249,7 @@ private data class MainUiPrefs(
     val customThemeColors: CustomThemeColors = CustomThemeColors.Default,
     val memberAccess: MemberAccess = MemberAccess.None,
     val font: AppFont = AppFont.INTER,
+    val customUiFontId: String? = null,
     val amoledMode: Boolean = false,
     val amoledSurfacesMode: Boolean = false,
     val hasChosenLayout: Boolean? = null,
@@ -525,15 +528,17 @@ open class MainActivity : ComponentActivity() {
                 val themeAndExperienceFlow = combine(
                     activeThemeFlow,
                     themeDataStore.selectedFont,
+                    themeDataStore.selectedCustomUiFontId,
                     themeDataStore.amoledMode,
                     themeDataStore.amoledSurfacesMode,
                     experienceModeDataStore.mode,
-                ) { themeAndAccess, font, amoledMode, amoledSurfacesMode, experienceMode ->
+                ) { themeAndAccess, font, customUiFontId, amoledMode, amoledSurfacesMode, experienceMode ->
                     MainUiPrefs(
                         theme = themeAndAccess.first.theme ?: AppTheme.WHITE,
                         customThemeColors = themeAndAccess.first.customColors,
                         memberAccess = themeAndAccess.second,
                         font = font,
+                        customUiFontId = customUiFontId,
                         amoledMode = amoledMode,
                         amoledSurfacesMode = amoledSurfacesMode,
                         experienceMode = experienceMode,
@@ -609,10 +614,17 @@ open class MainActivity : ComponentActivity() {
             }
             val discoverLocation = mainUiPrefs.discoverLocation
 
+            val customFontFamily = remember(mainUiPrefs.customUiFontId) {
+                mainUiPrefs.customUiFontId?.let { id ->
+                    UiFontStore.get(context).fontFile(id)?.let { customUiFontFamily(it) }
+                }
+            }
+
             NuvioTheme(
                 appTheme = mainUiPrefs.theme,
                 customThemeColors = mainUiPrefs.customThemeColors,
                 appFont = mainUiPrefs.font,
+                customFontFamily = customFontFamily,
                 amoledMode = mainUiPrefs.amoledMode,
                 amoledSurfacesMode = mainUiPrefs.amoledSurfacesMode,
                 settingsUiStyle = mainUiPrefs.settingsUiStyle

@@ -10,6 +10,7 @@ import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.Typography
 import com.nuvio.tv.R
 import com.nuvio.tv.domain.model.AppFont
+import java.io.File
 
 val DMSansFamily = FontFamily(
     Font(R.font.dm_sans_variable, FontWeight.Normal),
@@ -37,6 +38,13 @@ fun getFontFamily(appFont: AppFont): FontFamily = when (appFont) {
     AppFont.DM_SANS -> DMSansFamily
     AppFont.OPEN_SANS -> OpenSansFamily
 }
+
+fun customUiFontFamily(fontFile: File): FontFamily = FontFamily(
+    Font(fontFile, FontWeight.Normal),
+    Font(fontFile, FontWeight.Medium),
+    Font(fontFile, FontWeight.SemiBold),
+    Font(fontFile, FontWeight.Bold)
+)
 
 @Immutable
 data class NuvioTextStyleTokens(

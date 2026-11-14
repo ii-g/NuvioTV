@@ -5,6 +5,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.darkColorScheme
@@ -56,6 +57,7 @@ val LocalNuvioFocusRingStyle = staticCompositionLocalOf {
 fun NuvioTheme(
     appTheme: AppTheme = AppTheme.WHITE,
     appFont: AppFont = AppFont.INTER,
+    customFontFamily: FontFamily? = null,
     amoledMode: Boolean = false,
     amoledSurfacesMode: Boolean = false,
     settingsUiStyle: SettingsUiStyle = SettingsUiStyle.CLASSIC,
@@ -71,7 +73,7 @@ fun NuvioTheme(
         amoledMode = amoledMode,
         amoledSurfacesMode = amoledSurfacesMode
     )
-    val typography = buildNuvioTypography(getFontFamily(appFont))
+    val typography = buildNuvioTypography(customFontFamily ?: getFontFamily(appFont))
     val textStyles = buildNuvioTextStyles(typography)
 
     val materialColorScheme = darkColorScheme(
