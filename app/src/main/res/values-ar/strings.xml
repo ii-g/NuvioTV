@@ -807,7 +807,7 @@
     <string name="sub_bold_sub">استخدام وزن خط عريض للترجمة</string>
     <string name="sub_text_color">لون النص</string>
     <string name="sub_bg_color">لون الخلفية</string>
-    <string name="sub_outline">الإطار</string>
+    <string name="sub_outline">الإطار الخارجي</string>
     <string name="sub_outline_sub">إضافة إطار حول نص الترجمة لتحسين رؤيته</string>
     <string name="sub_outline_color">لون الإطار</string>
     <string name="sub_outline_width">سماكة الإطار</string>
@@ -1848,7 +1848,7 @@
     <string name="subtitle_section_advanced">متقدم</string>
     <string name="subtitle_font_size">حجم الخط</string>
     <string name="subtitle_bold">عريض</string>
-    <string name="subtitle_outline">الإطار</string>
+    <string name="subtitle_outline">إطار خارجي</string>
     <string name="subtitle_bottom_offset">الإزاحة السفلية</string>
     <string name="subtitle_on">مفعّل</string>
     <string name="subtitle_off">معطّل</string>
@@ -1863,7 +1863,7 @@
     <string name="subtitle_style_text_color_hdr">لون النص (HDR)</string>
     <string name="subtitle_style_text_opacity_hdr">عتامة النص (HDR)</string>
     <string name="subtitle_style_brightness_hdr">السطوع (HDR)</string>
-    <string name="subtitle_style_outline">الإطار</string>
+    <string name="subtitle_style_outline">إطار خارجي</string>
     <string name="subtitle_style_bottom_offset">الإزاحة السفلية</string>
     <string name="subtitle_style_defaults">الافتراضيات</string>
     <string name="subtitle_style_on">مفعّل</string>
