@@ -6,7 +6,7 @@
     <string name="servers_empty">لا توجد خوادم متصلة بعد.</string>
     <string name="servers_add_description">سجّل الدخول بعنوان الخادم والمستخدم في %1$s.</string>
     <string name="servers_sign_in_title">تسجيل الدخول إلى %1$s</string>
-    <string name="servers_sign_in_subtitle">أدخل عنوان الخادم واسم المستخدم في %1$s الذي تريد تسجيل الدخول به. تُستخدم كلمة المرور لتسجيل الدخول فقط.</string>
+    <string name="servers_sign_in_subtitle">أدخل عنوان الخادم واسم المستخدم في %1$s لتسجيل الدخول. وتُستخدم كلمة المرور لتسجيل الدخول فقط.</string>
     <string name="servers_address">عنوان الخادم</string>
     <string name="servers_address_hint">http://192.168.1.10:8096</string>
     <string name="servers_username">اسم المستخدم</string>
@@ -69,7 +69,7 @@
     <string name="plex_reach_remote">الإنترنت</string>
     <string name="plex_server_owned">خادمك</string>
     <string name="plex_server_shared">مشارَك معك</string>
-    <string name="plex_servers_checking">جارٍ التحقق من كيفية الوصول إلى كل خادم…</string>
+    <string name="plex_servers_checking">جارٍ التحقق من إمكانية الوصول إلى كل خادم…</string>
     <string name="plex_servers_finding">جارٍ البحث عن خوادمك…</string>
     <string name="plex_servers_none">لا يوجد Plex Media Server متاح لهذا الحساب.</string>
     <string name="plex_servers_subtitle">تم تسجيل الدخول إلى Plex باسم %1$s.</string>
@@ -89,7 +89,7 @@
     <string name="servers_signing_in">جارٍ تسجيل الدخول…</string>
     <string name="silo_add_description">سجّل الدخول برمز أو بحساب Silo.</string>
     <string name="silo_address_hint">https://silo.example.com</string>
-    <string name="silo_address_subtitle">أدخل العنوان الذي تفتح Silo به في المتصفح.</string>
+    <string name="silo_address_subtitle">أدخل عنوان Silo الذي تفتحه في المتصفح.</string>
     <string name="silo_code_denied">تم رفض تسجيل الدخول هذا.</string>
     <string name="silo_code_instructions">امسح الرمز، أو افتح هذا العنوان على جهاز سجّلت الدخول فيه وأدخل الرمز.</string>
     <string name="silo_code_subtitle">اعتمد هذا التلفاز في %1$s من هاتفك أو حاسوبك.</string>
