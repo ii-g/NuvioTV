@@ -94,7 +94,7 @@
     <string name="web_import_error_source_missing_addon_fields">المجموعة \"{collection}\", مجلد \"{folder}\", المصدر {index}: حقول مطلوبة مفقودة (addonId, type, catalogId)</string>
     <string name="web_import_error_source_missing_tmdb_type">المجموعة \"{collection}\", مجلد \"{folder}\", المصدر {index}: نوع مصدر TMDB مفقود</string>
     <string name="web_import_error_source_missing_trakt_id">المجموعة \"{collection}\"، مجلد \"{folder}\"، المصدر {index}: مُعرِّف قائمة Trakt مفقود</string>
-    <string name="web_import_success">تم استيراد {count} مجموعة. راجعها واضغط زر حفظ التغييرات للتطبيق.</string>
+    <string name="web_import_success">تم استيراد {count} من المجموعات. راجعها واضغط زر حفظ التغييرات للتطبيق.</string>
     <string name="web_import_invalid_json">تنسيق JSON غير صالح</string>
     
     <!-- HomeScreen -->
@@ -264,7 +264,7 @@
     <string name="detail_comments_badge_review">مراجعة</string>
     <string name="detail_comments_badge_spoiler">حرق أحداث</string>
     <string name="detail_comments_badge_rating">%1$d/10</string>
-    <string name="detail_comments_likes">%1$d إعجاب</string>
+    <string name="detail_comments_likes">الإعجابات: %1$d</string>
     <string name="tmdb_entity_kind_company">شركة الإنتاج</string>
     <string name="tmdb_entity_kind_network">شبكة العرض</string>
     <string name="tmdb_entity_rail_popular">رائج</string>
@@ -543,8 +543,8 @@
     <string name="settings_integrations_section">الخدمات المرتبطة</string>
     <string name="settings_integrations_section_subtitle">إدارة الخدمات المرتبطة المتاحة</string>
     <string name="settings_tmdb_subtitle">عناصر التحكم في إثراء البيانات الوصفية</string>
-    <string name="settings_mdblist_subtitle">مصادر التقييمات الخارجية</string>
-    <string name="settings_animeskip_subtitle">أوقات تخطي مقدمة الأنمي ونهايته</string>
+    <string name="settings_mdblist_subtitle">مزوّدو التقييمات الخارجية</string>
+    <string name="settings_animeskip_subtitle">أوقات تخطي مقدمة الأنمي والخاتمة</string>
     <string name="settings_debrid_subtitle">مصادر الحسابات السحابية التجريبية</string>
 
     <string name="playback_title">إعدادات التشغيل</string>
@@ -669,7 +669,7 @@
     <string name="autoplay_fallback_startup_timeout">الوقت اللازم لبدء المصدر</string>
     <string name="autoplay_fallback_startup_timeout_sub">مدة الانتظار لبدء المصدر قبل تجربة المصدر التالي.</string>
     <string name="autoplay_fallback_startup_timeout_value">%1$d ث</string>
-    <string name="autoplay_fallback_next_source_blocked_by_engine_switch">أوقف التبديل التلقائي للمحرك عند خطأ البدء لاستخدام هذا الخيار.</string>
+    <string name="autoplay_fallback_next_source_blocked_by_engine_switch">عطّل التبديل التلقائي للمحرك عند خطأ البدء لاستخدام هذا الخيار.</string>
     <string name="player_error_source_startup_timeout">لم يبدأ المصدر خلال %1$d ثانية.</string>
     <string name="playback_release_decoder_on_background">تحرير فك الترميز في الخلفية</string>
     <string name="playback_release_decoder_on_background_sub">تحرير فك ترميز الفيديو عند انتقال Nuvio إلى الخلفية. فعّل هذا الخيار إذا فشل التشغيل بسبب خطأ في فك الترميز بعد العودة إلى التطبيق. يُعاد تحميل المشغّل عند العودة، وكذلك بعد شاشة التوقف.</string>
@@ -807,7 +807,7 @@
     <string name="sub_bold_sub">استخدام وزن خط عريض للترجمة</string>
     <string name="sub_text_color">لون النص</string>
     <string name="sub_bg_color">لون الخلفية</string>
-    <string name="sub_outline">الإطار الخارجي</string>
+    <string name="sub_outline">الإطار</string>
     <string name="sub_outline_sub">إضافة إطار حول نص الترجمة لتحسين رؤيته</string>
     <string name="sub_outline_color">لون الإطار</string>
     <string name="sub_outline_width">سماكة الإطار</string>
@@ -888,9 +888,9 @@
     <string name="autoplay_threshold_min">عدد الدقائق قبل النهاية</string>
     <string name="autoplay_threshold_mode">وضع توقيت الحلقة التالية</string>
     <string name="autoplay_threshold_pct_title">النسبة المئوية</string>
-    <string name="autoplay_threshold_pct_sub">يُستخدم كبديل عند عدم توفر توقيت شارة النهاية.</string>
+    <string name="autoplay_threshold_pct_sub">يُستخدم كبديل عند عدم توفر توقيت الخاتمة.</string>
     <string name="autoplay_threshold_min_title">الدقائق قبل النهاية</string>
-    <string name="autoplay_threshold_min_sub">يُستخدم كبديل عند عدم توفر توقيت شارة النهاية.</string>
+    <string name="autoplay_threshold_min_sub">يُستخدم كبديل عند عدم توفر توقيت الخاتمة.</string>
     <string name="autoplay_scope_all">كل المصادر</string>
     <string name="autoplay_scope_addons">الإضافات المثبتة فقط</string>
     <string name="autoplay_scope_plugins">الملحقات المفعّلة فقط</string>
@@ -912,8 +912,8 @@
     <string name="autoplay_scope_all_desc">يمكن للتشغيل التلقائي استخدام الإضافات المثبتة والملحقات المفعّلة معًا.</string>
     <string name="autoplay_scope_addons_desc">يقتصر التشغيل التلقائي على مصادر الإضافات المثبتة فقط.</string>
     <string name="autoplay_scope_plugins_desc">يقتصر التشغيل التلقائي على مصادر الملحقات المفعّلة فقط.</string>
-    <string name="autoplay_threshold_pct_desc">يُعرض حسب نسبة التشغيل عند عدم توفر توقيت شارة النهاية.</string>
-    <string name="autoplay_threshold_min_desc">يُعرض قبل نهاية الحلقة بهذا العدد من الدقائق عند عدم توفر توقيت شارة النهاية.</string>
+    <string name="autoplay_threshold_pct_desc">يُعرض حسب نسبة التشغيل عند عدم توفر توقيت الخاتمة.</string>
+    <string name="autoplay_threshold_min_desc">يُعرض قبل نهاية الحلقة بهذا العدد من الدقائق عند عدم توفر توقيت الخاتمة.</string>
     <string name="autoplay_regex_matches">يطابق اسم المصدر أو عنوانه أو وصفه أو الإضافة أو رابطه. مثال: 4K|2160p|Remux</string>
     <string name="autoplay_regex_presets">الإعدادات المسبقة</string>
     <string name="autoplay_invalid_regex">نمط Regex غير صالح</string>
@@ -933,8 +933,8 @@
     <string name="layout_landscape_posters_sub">استخدام البطاقات الأفقية في كل مكان.</string>
     <string name="layout_preview_row">إظهار صف المعاينة</string>
     <string name="layout_preview_row_sub">إظهار معاينة جزئية للصف السفلي في التخطيط الحديث.</string>
-    <string name="layout_hero_catalogs">قوائم القسم المميز</string>
-    <string name="layout_hero_catalogs_sub">اختر قائمة واحدة أو أكثر لمحتوى القسم المميز.</string>
+    <string name="layout_hero_catalogs">قوائم المحتوى المميز</string>
+    <string name="layout_hero_catalogs_sub">اختر قائمة واحدة أو أكثر للمحتوى المميز.</string>
     <string name="layout_section_content">محتوى الرئيسية</string>
     <string name="layout_section_content_desc">التحكم في ما يظهر في الرئيسية والبحث.</string>
     <string name="layout_section_sidebar">الشريط الجانبي والتنقل</string>
@@ -949,16 +949,16 @@
     <string name="layout_modern_sidebar_sub">تفعيل التنقل عبر شريط جانبي عائم.</string>
     <string name="layout_modern_sidebar_blur">تمويه الشريط الجانبي الحديث</string>
     <string name="layout_modern_sidebar_blur_sub">تفعيل تأثير التمويه على أسطح الشريط الجانبي الحديث.</string>
-    <string name="layout_fullscreen_hero_backdrop">خلفية القسم المميز بملء الشاشة</string>
-    <string name="layout_fullscreen_hero_backdrop_sub">توسيع خلفية القسم المميز لتملأ الشاشة بأكملها.</string>
+    <string name="layout_fullscreen_hero_backdrop">خلفية المحتوى المميز بملء الشاشة</string>
+    <string name="layout_fullscreen_hero_backdrop_sub">توسيع خلفية المحتوى المميز لتملأ الشاشة بأكملها.</string>
     <string name="layout_classic_focus_gradient">تدرج لوني للعنصر المُركَّز عليه</string>
     <string name="layout_classic_focus_gradient_sub">دمج ألوان العمل الفني في الجانب الأيمن من الصفحة الرئيسية الكلاسيكية.</string>
-    <string name="layout_show_hero">إظهار القسم المميز</string>
-    <string name="layout_show_hero_sub">عرض شرائح القسم المميز أعلى الصفحة الرئيسية.</string>
+    <string name="layout_show_hero">إظهار المحتوى المميز</string>
+    <string name="layout_show_hero_sub">عرض شرائح المحتوى المميز أعلى الصفحة الرئيسية.</string>
     <string name="layout_show_discover">إظهار استكشاف أو إخفاؤه</string>
     <string name="layout_show_discover_sub">إضافة قسم استكشاف للتصفح.</string>
     <string name="layout_discover_location_action">مكان استكشاف</string>
-    <string name="layout_discover_location_dialog_title">مكان قسم استكشاف</string>
+    <string name="layout_discover_location_dialog_title">مكان استكشاف</string>
     <string name="layout_discover_location_in_search">إظهار في علامة تبويب البحث</string>
     <string name="layout_discover_location_in_search_desc">يظهر قسم استكشاف داخل علامة تبويب البحث.</string>
     <string name="layout_discover_location_in_sidebar">إظهار في القائمة الجانبية</string>
@@ -1042,7 +1042,7 @@
     <string name="layout_trailer_location">موقع تشغيل الإعلان في العرض الحديث</string>
     <string name="layout_trailer_location_sub">اختر مكان تشغيل معاينة الإعلان في الواجهة الحديثة.</string>
     <string name="layout_trailer_expanded_card">البطاقة الممتدة</string>
-    <string name="layout_trailer_hero_media">وسائط القسم المميز</string>
+    <string name="layout_trailer_hero_media">وسائط المحتوى المميز</string>
     <string name="layout_trailer_hero_media_no_expand">وسائط المحتوى المميز (بدون توسيع)</string>
     <string name="layout_preset_compact">مدمج</string>
     <string name="layout_preset_dense">كثيف</string>
@@ -1127,7 +1127,7 @@
     <string name="mdblist_title">تقييمات MDBList</string>
     <string name="mdblist_subtitle">اضبط التقييمات الخارجية الظاهرة في المحتوى المميز لصفحة التفاصيل</string>
     <string name="mdblist_enable_title">تفعيل تقييمات MDBList</string>
-    <string name="mdblist_enable_subtitle">جلب التقييمات من مصادر خارجية في شاشة تفاصيل البيانات الوصفية.</string>
+    <string name="mdblist_enable_subtitle">جلب التقييمات من مزوّدين خارجيين في شاشة تفاصيل البيانات الوصفية.</string>
     <string name="mdblist_api_key_title">مفتاح API</string>
     <string name="mdblist_api_key_subtitle">مطلوب لجلب التقييمات من MDBList</string>
     <string name="mdblist_ratings_credentials_subtitle">استخدم حساب MDBList المتصل في التتبع، أو أدخل مفتاح API منفصلًا للتقييمات.</string>
@@ -1319,7 +1319,7 @@
 
     <!-- Anime-Skip -->
     <string name="animeskip_title">Anime Skip</string>
-    <string name="animeskip_subtitle">اضبط معرّف عميل Anime Skip لتخطي مقدمات الأنمي ونهاياتها</string>
+    <string name="animeskip_subtitle">اضبط معرّف عميل Anime Skip لتخطي مقدمة الأنمي والخاتمة</string>
     <string name="animeskip_enable_title">تفعيل Anime Skip</string>
     <string name="animeskip_enable_subtitle">جلب أوقات التخطي من anime-skip.com</string>
     <string name="animeskip_client_id_title">مُعرِّف العميل</string>
@@ -1336,7 +1336,7 @@
     <string name="tmdb_enable_title">تفعيل إثراء TMDB</string>
     <string name="tmdb_enable_subtitle">استخدام TMDB كمصدر للبيانات الوصفية لإثراء بيانات الإضافات</string>
     <string name="tmdb_modern_home_title">تفعيل في الواجهة الحديثة</string>
-    <string name="tmdb_modern_home_subtitle">تطبيق إثراء TMDB أيضًا على قسم العرض المميز والبطاقات المُركَّز عليها في الواجهة الحديثة</string>
+    <string name="tmdb_modern_home_subtitle">تطبيق إثراء TMDB أيضًا على المحتوى المميز والبطاقات المُركَّز عليها في الواجهة الحديثة</string>
     <string name="tmdb_enrich_continue_watching_title">إثراء متابعة المشاهدة</string>
     <string name="tmdb_enrich_continue_watching_subtitle">تطبيق إثراء TMDB على عناصر متابعة المشاهدة</string>
     <string name="tmdb_language_title">اللغة</string>
@@ -1561,8 +1561,8 @@
     <string name="profile_pin_overlay_remove_verify_heading">أدخل رمز PIN الحالي لإزالة القفل عن %1$s.</string>
     <string name="profile_pin_overlay_remove_verify_support">أدخل رمز PIN الحالي المكوّن من 4 أرقام لإزالة هذا القفل.</string>
     <string name="profile_pin_overlay_delete_verify_heading">أدخل رمز PIN الحالي لحذف %1$s.</string>
-    <string name="profile_pin_overlay_delete_verify_support">أدخل الرمز المكوّن من 4 أرقام قبل حذف هذا الملف الشخصي.</string>
-    <string name="profile_pin_overlay_set_support">سيكون هذا الرمز مطلوبًا قبل فتح هذا الملف الشخصي.</string>
+    <string name="profile_pin_overlay_delete_verify_support">أدخل رمز PIN الحالي المكوّن من 4 أرقام قبل حذف هذا الملف الشخصي.</string>
+    <string name="profile_pin_overlay_set_support">سيكون رمز PIN هذا مطلوبًا قبل فتح هذا الملف الشخصي.</string>
     <string name="profile_pin_overlay_confirm_support">أعد إدخال الأرقام الأربعة نفسها لإنهاء الإعداد.</string>
     <string name="profile_pin_overlay_mismatch">رموز PIN غير متطابقة. أدخل رمزًا جديدًا مرة أخرى.</string>
     <string name="profile_pin_overlay_forgot_hint">نسيت رمز PIN؟ أعد تعيينه من حساب Nuvio الخاص بك على موقع الويب.</string>
@@ -1626,7 +1626,7 @@
     <string name="addon_refresh_default_subtitle">سحب أحدث تغييرات الإضافات للملف الحالي</string>
     <string name="addon_refresh_done_subtitle">تم تحديث الإضافات الآن</string>
     <string name="addon_pending_collections_updated">تم تحديث المجموعات</string>
-    <string name="addon_pending_collections_replace">%1$d مجموعات ستحل محل المجموعات الحالية</string>
+    <string name="addon_pending_collections_replace">%1$d من المجموعات ستحل محل المجموعات الحالية</string>
     <string name="addon_confirm_total_addons">إجمالي الإضافات: %1$d</string>
     <string name="addon_confirm_total_catalogs">إجمالي القوائم: %1$d</string>
     <string name="addon_catalogs_types">القوائم: %1$d - الأنواع: %2$s</string>
@@ -1848,7 +1848,7 @@
     <string name="subtitle_section_advanced">متقدم</string>
     <string name="subtitle_font_size">حجم الخط</string>
     <string name="subtitle_bold">عريض</string>
-    <string name="subtitle_outline">إطار خارجي</string>
+    <string name="subtitle_outline">الإطار</string>
     <string name="subtitle_bottom_offset">الإزاحة السفلية</string>
     <string name="subtitle_on">مفعّل</string>
     <string name="subtitle_off">معطّل</string>
@@ -1863,7 +1863,7 @@
     <string name="subtitle_style_text_color_hdr">لون النص (HDR)</string>
     <string name="subtitle_style_text_opacity_hdr">عتامة النص (HDR)</string>
     <string name="subtitle_style_brightness_hdr">السطوع (HDR)</string>
-    <string name="subtitle_style_outline">إطار خارجي</string>
+    <string name="subtitle_style_outline">الإطار</string>
     <string name="subtitle_style_bottom_offset">الإزاحة السفلية</string>
     <string name="subtitle_style_defaults">الافتراضيات</string>
     <string name="subtitle_style_on">مفعّل</string>
@@ -2024,14 +2024,14 @@
     <string name="library_list_create_dialog_title">إنشاء قائمة</string>
     <string name="library_list_edit_dialog_title">تعديل القائمة</string>
     <string name="library_sync_btn">مزامنة</string>
-    <string name="library_syncing_btn">جارٍ المزامنة…</string>
+    <string name="library_syncing_btn">جارٍ مزامنة…</string>
     <string name="cloud_library_connect_action">ربط الحساب</string>
     <string name="cloud_library_connect_message">اربط حسابك في إعدادات الخدمات المتصلة لتصفح الملفات القابلة للتشغيل من مكتبتك السحابية.</string>
     <string name="cloud_library_connect_title">لا يوجد حساب سحابي متصل</string>
     <string name="cloud_library_disabled_action">فتح الخدمات المتصلة</string>
     <string name="cloud_library_disabled_message">فعّل المكتبة السحابية من إعدادات الخدمات المتصلة لتصفح ملفات الحسابات المربوطة.</string>
     <string name="cloud_library_disabled_title">المكتبة السحابية معطّلة</string>
-    <string name="cloud_library_empty_message">لا توجد ملفات سحابية قابلة للتشغيل تطابق عوامل التصفية الحالية.</string>
+    <string name="cloud_library_empty_message">لا توجد ملفات سحابية قابلة للتشغيل تطابق الفلاتر الحالية.</string>
     <string name="cloud_library_empty_title">لا يوجد شيء هنا بعد</string>
     <string name="cloud_library_file_picker_title">اختر ملفًا لتشغيله</string>
     <string name="cloud_library_load_failed">تعذر تحميل مكتبة %1$s السحابية</string>
@@ -2102,7 +2102,7 @@
 
     <!-- SyncCodeGenerateScreen -->
     <string name="sync_generate_title">إنشاء رمز مزامنة</string>
-    <string name="sync_generate_subtitle">أنشئ رمزًا سريًا لحماية رمز المزامنة الخاص بك. شارك الرمز مع أجهزتك الأخرى.</string>
+    <string name="sync_generate_subtitle">أنشئ رمز حماية لرمز المزامنة، وشارك الرمز مع أجهزتك الأخرى.</string>
     <string name="sync_generate_code_label">رمز المزامنة الخاص بك</string>
     <string name="sync_generate_instruction">أدخل هذا الرمز ورمز الحماية الخاص بك على جهازك الآخر لربطهما.</string>
     <string name="sync_generate_done">تم</string>
@@ -2635,10 +2635,10 @@
     <string name="collections_editor_placeholder_cover_image">رابط صورة الغلاف</string>
     <string name="collections_editor_placeholder_folder">اسم المجلد</string>
     <string name="collections_editor_placeholder_gif">رابط GIF متحرك (يعمل عند التركيز فقط)</string>
-    <string name="collections_editor_hero_backdrop">خلفية العرض المميز (الشاشة الرئيسية الحديثة)</string>
-    <string name="collections_editor_placeholder_hero_backdrop">رابط مخصص لخلفية العرض المميز (اختياري)</string>
-    <string name="collections_editor_hero_video">فيديو العرض المميز (الشاشة الرئيسية الحديثة)</string>
-    <string name="collections_editor_placeholder_hero_video">رابط مخصص لفيديو العرض المميز (اختياري)</string>
+    <string name="collections_editor_hero_backdrop">خلفية المحتوى المميز (الشاشة الرئيسية الحديثة)</string>
+    <string name="collections_editor_placeholder_hero_backdrop">رابط مخصص لخلفية المحتوى المميز (اختياري)</string>
+    <string name="collections_editor_hero_video">فيديو المحتوى المميز (الشاشة الرئيسية الحديثة)</string>
+    <string name="collections_editor_placeholder_hero_video">رابط مخصص لفيديو المحتوى المميز (اختياري)</string>
     <string name="collections_editor_title_logo">شعار العنوان (الشاشة الرئيسية الحديثة)</string>
     <string name="collections_editor_placeholder_title_logo">رابط مخصص لشعار العنوان (اختياري)</string>
     <string name="collections_editor_search_emoji_placeholder">ابحث عن رمز تعبيري...</string>
@@ -2781,7 +2781,7 @@
     <string name="library_list_updated">تم تحديث القائمة</string>
     <string name="library_error_save_list_failed">فشل حفظ القائمة</string>
     <string name="library_list_deleted">تم حذف القائمة</string>
-    <string name="library_error_delete_list_failed">فشل حذف القائمة</string>
+    <string name="library_error_delete_list_failed">تعذّر حذف القائمة</string>
     <string name="library_list_order_updated">تم تحديث ترتيب القوائم</string>
     <string name="library_error_reorder_lists_failed">فشل إعادة ترتيب القوائم</string>
     <string name="library_list_fallback_title">قائمة</string>
@@ -3013,7 +3013,7 @@
     <string name="ambient_mode_catalogs">القوائم</string>
     <string name="ambient_mode_catalogs_subtitle">اختر حتى 3 قوائم لعرض صورها</string>
     <string name="ambient_mode_catalogs_dialog_subtitle">اختر حتى 3 قوائم</string>
-    <string name="ambient_mode_catalogs_default">كما في قسم العرض المميز</string>
+    <string name="ambient_mode_catalogs_default">كما في المحتوى المميز</string>
     <string name="ambient_mode_catalogs_count">%1$d من %2$d</string>
     <string name="appearance_app_icon_and_banner">أيقونة التطبيق والبانر</string>
     <string name="appearance_app_icon_and_banner_subtitle">تغيير أيقونة التطبيق والبانر</string>
@@ -3207,8 +3207,8 @@
     <string name="licenses_attributions_torbox_body">يتصل Nuvio بـ TorBox لمصادقة الحساب والوصول إلى المكتبة السحابية وفحص ما إذا كان المحتوى مخزّنًا لدى الخدمة وميزات التشغيل السحابي. Nuvio غير تابع لـ TorBox ولا معتمد منه.</string>
     <string name="licenses_attributions_torbox_title">TorBox</string>
     <string name="mdblist_mal_subtitle">عرض تقييم MyAnimeList</string>
-    <string name="mdblist_show_on_hero_title">استخدام التقييمات في القسم المميز</string>
-    <string name="mdblist_show_on_hero_subtitle">إظهار تقييمات MDBList في القسم المميز (النمط الحديث والكلاسيكي أو الشبكي)</string>
+    <string name="mdblist_show_on_hero_title">استخدام التقييمات في المحتوى المميز</string>
+    <string name="mdblist_show_on_hero_subtitle">إظهار تقييمات MDBList في المحتوى المميز (النمط الحديث والكلاسيكي أو الشبكي)</string>
     <string name="mdblist_rating_order_title">ترتيب التقييمات</string>
     <string name="mdblist_rating_order_subtitle">تظهر أول 3 تقييمات مفعّلة ومتاحة على المحتوى المميز الحديث. استخدم زر إعادة الترتيب لتغيير ترتيبها.</string>
     <string name="mdblist_mal_title">MyAnimeList</string>
@@ -3272,7 +3272,7 @@
     <string name="playback_net_parallel_sub">استخدام اتصالات متعددة بالتوازي لجلب التدفقات. فعّلها إذا كنت تعاني تقطعًا رغم أن سرعة تنزيلك كافية تمامًا.</string>
     <string name="playback_reset_to_default">إعادة الضبط إلى الافتراضي</string>
     <string name="playback_section_buffer_network">المخزن المؤقت والشبكة</string>
-    <string name="playback_section_buffer_network_desc">مقدار المحتوى الذي يُحتفظ به في الذاكرة وطريقة جلب التدفقات.</string>
+    <string name="playback_section_buffer_network_desc">مقدار المحتوى الذي يُحتفظ به في الذاكرة وطريقة جلب المصادر.</string>
     <string name="player_error_play_stream_failed">فشل تشغيل البث المحدد</string>
     <string name="player_report_issue">الإبلاغ عن مشكلة</string>
     <string name="player_report_issue_failed">تعذر إرسال التقرير</string>
@@ -3302,7 +3302,7 @@
     <string name="sentry_keep_enabled">أبقِها مفعّلة</string>
     <string name="sentry_not_sent_body">كلمات المرور، رموز الوصول، رموز التحديث، محتوى الطلبات، محتوى الاستجابات، الترويسات، الكوكيز، لقطات الشاشة، هرمية العرض، إعادة تشغيل الجلسة، التشخيصات الخام، وقيم الاستعلام أو الجزء من روابط البث.</string>
     <string name="sentry_not_sent_title">لا يُرسل</string>
-    <string name="sentry_sent_body">الأعطال، حالات عدم استجابة التطبيق الحالية (ANR)، آثار المكدس، نسخة التطبيق، نوع البناء، النكهة، بيانات الجهاز والنظام، بالإضافة إلى آثار شبكة آمنة تشمل الطريقة والمضيف والمسار والحالة والمدة ونوع الاستثناء.</string>
+    <string name="sentry_sent_body">الأعطال، حالات عدم استجابة التطبيق الحالية (ANR)، آثار المكدس، نسخة التطبيق، نوع البناء، إصدار التوزيع، بيانات الجهاز والنظام، بالإضافة إلى آثار شبكة آمنة تشمل الطريقة والمضيف والمسار والحالة والمدة ونوع الاستثناء.</string>
     <string name="sentry_sent_title">يُرسل</string>
     <string name="sentry_turn_off">إيقاف</string>
     <string name="sentry_turn_on">تفعيل</string>
@@ -3310,7 +3310,7 @@
     <string name="server_options_connect_custom">الاتصال بخادم مخصص</string>
     <string name="server_options_content_description">خيارات الخادم</string>
     <string name="server_options_use_official">استخدام الخادم الرسمي</string>
-    <string name="settings_card_depth_apply_to">التطبيق على</string>
+    <string name="settings_card_depth_apply_to">يطبَّق على</string>
     <string name="settings_card_depth_coverage_full">المحيط كاملًا</string>
     <string name="settings_card_depth_coverage_half">نصف</string>
     <string name="settings_card_depth_coverage_top">الأعلى فقط</string>
