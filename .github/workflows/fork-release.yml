@@ -1,0 +1,71 @@
+name: Fork Release Build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fork-release-build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  fork-release-build:
+    name: Build fullRelease APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+
+      - name: Prepare local properties
+        env:
+          LOCAL_PROPERTIES_BASE64: ${{ secrets.LOCAL_PROPERTIES_BASE64 }}
+          LOCAL_DEV_PROPERTIES_BASE64: ${{ secrets.LOCAL_DEV_PROPERTIES_BASE64 }}
+        run: |
+          if [ -n "$LOCAL_PROPERTIES_BASE64" ]; then
+            printf '%s' "$LOCAL_PROPERTIES_BASE64" | base64 --decode > local.properties
+          else
+            touch local.properties
+          fi
+
+          if [ -n "$LOCAL_DEV_PROPERTIES_BASE64" ]; then
+            printf '%s' "$LOCAL_DEV_PROPERTIES_BASE64" | base64 --decode > local.dev.properties
+          else
+            touch local.dev.properties
+          fi
+
+      - name: Prepare fork release signing
+        env:
+          FORK_RELEASE_KEYSTORE_BASE64: ${{ secrets.FORK_RELEASE_KEYSTORE_BASE64 }}
+          FORK_RELEASE_KEY_ALIAS: ${{ secrets.FORK_RELEASE_KEY_ALIAS }}
+          FORK_RELEASE_KEY_PASSWORD: ${{ secrets.FORK_RELEASE_KEY_PASSWORD }}
+          FORK_RELEASE_STORE_PASSWORD: ${{ secrets.FORK_RELEASE_STORE_PASSWORD }}
+        run: |
+          printf '%s' "$FORK_RELEASE_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/fork-release.jks"
+          {
+            echo "NUVIO_RELEASE_STORE_FILE=$RUNNER_TEMP/fork-release.jks"
+            echo "NUVIO_RELEASE_KEY_ALIAS=$FORK_RELEASE_KEY_ALIAS"
+            echo "NUVIO_RELEASE_KEY_PASSWORD=$FORK_RELEASE_KEY_PASSWORD"
+            echo "NUVIO_RELEASE_STORE_PASSWORD=$FORK_RELEASE_STORE_PASSWORD"
+          } >> "$GITHUB_ENV"
+
+      - name: Test updater and build fullRelease APK
+        run: ./gradlew :app:testFullReleaseUnitTest --tests 'com.nuvio.tv.updater.*' :app:assembleFullRelease --stacktrace
+
+      - name: Upload fullRelease APK
+        uses: actions/upload-artifact@v7
+        with:
+          name: app-full-universal-release.apk
+          path: app/build/outputs/apk/full/release/app-full-universal-release.apk
+          archive: false
+          if-no-files-found: error
+          retention-days: 7
