@@ -1846,6 +1846,11 @@
     <string name="subtitle_style_on">مفعّل</string>
     <string name="subtitle_style_off">معطّل</string>
     <string name="subtitle_style_weight">سمك الخط</string>
+    <string name="ui_font_import">استيراد من الهاتف</string>
+    <string name="ui_font_import_desc">أضف خطًا بصيغة .ttf أو .otf بحجم حتى 10 ميغابايت. تبقى الخطوط المستوردة على هذا التلفاز.</string>
+    <string name="ui_font_import_qr">امسح بهاتفك لإضافة خط بصيغة .ttf أو .otf</string>
+    <string name="ui_font_missing">الخط غير متوفر على هذا الجهاز. يتم استخدام الخط الافتراضي.</string>
+    <string name="ui_font_remove">إزالة %1$s</string>
     <string name="panel_failed_load_streams">فشل تحميل المصادر</string>
     <string name="panel_failed_load_episodes">فشل تحميل الحلقات</string>
 
@@ -3485,4 +3490,11 @@
     <string name="web_stream_badge_imported">استُورد رابط الشارة.</string>
     <string name="web_stream_badge_importing">جارٍ الاستيراد\u2026</string>
     <string name="web_stream_badge_load_error">تعذر تحميل إعدادات شارات البث</string>
+    <string name="web_ui_font_title">خطوط الواجهة</string>
+    <string name="web_ui_font_subtitle">اختر ملف خط بصيغة .ttf أو .otf لاستخدامه في واجهة التطبيق على تلفازك.</string>
+    <string name="web_ui_font_choose">اختيار ملف الخط</string>
+    <string name="web_ui_font_uploading">جارٍ الرفع…</string>
+    <string name="web_ui_font_added">تمت الإضافة إلى تلفازك</string>
+    <string name="web_ui_font_error">تعذر استيراد هذا الخط. اختر ملفًا صالحًا بصيغة .ttf أو .otf بحجم أقل من 10 ميغابايت.</string>
+    <string name="web_ui_font_connection_error">خطأ في الاتصال</string>
 </resources>

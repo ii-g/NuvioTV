@@ -961,6 +961,11 @@
     <string name="sub_font_import_qr">Scan with your phone to add a .ttf or .otf font</string>
     <string name="sub_font_missing">Font unavailable on this device. Using the default font.</string>
     <string name="sub_font_remove">Remove %1$s</string>
+    <string name="ui_font_import">Import from Phone</string>
+    <string name="ui_font_import_desc">Add a .ttf or .otf font up to 10 MB. Imported fonts stay on this TV.</string>
+    <string name="ui_font_import_qr">Scan with your phone to add a .ttf or .otf font</string>
+    <string name="ui_font_missing">Font unavailable on this device. Using the default font.</string>
+    <string name="ui_font_remove">Remove %1$s</string>
     <string name="sub_background">Background</string>
     <string name="sub_bg_opacity">Background Opacity</string>
     <string name="sub_bg_roundness">Corner Roundness</string>
@@ -1289,6 +1294,13 @@
     <string name="web_subtitle_font_added">Added to your TV</string>
     <string name="web_subtitle_font_error">Could not import this font. Choose a valid .ttf or .otf file under 10 MB.</string>
     <string name="web_subtitle_font_connection_error">Connection error</string>
+    <string name="web_ui_font_title">UI Fonts</string>
+    <string name="web_ui_font_subtitle">Choose a .ttf or .otf file to use it for the app interface on your TV.</string>
+    <string name="web_ui_font_choose">Choose Font File</string>
+    <string name="web_ui_font_uploading">Uploading…</string>
+    <string name="web_ui_font_added">Added to your TV</string>
+    <string name="web_ui_font_error">Could not import this font. Choose a valid .ttf or .otf file under 10 MB.</string>
+    <string name="web_ui_font_connection_error">Connection error</string>
 
 
     <string name="mdblist_name">MDBList</string>

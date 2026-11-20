@@ -11,14 +11,16 @@ class SubtitleFontUploadServer(
     private val context: Context,
     private val onFontUploaded: (fileName: String, bytes: ByteArray) -> Boolean,
     private val logoProvider: () -> ByteArray?,
-    port: Int
+    port: Int,
+    private val pageHtml: (Context) -> String = { ctx -> SubtitleFontWebPage.html(ctx) },
+    private val maxBytes: Int = SubtitleFonts.MAX_BYTES
 ) : NanoHTTPD(port) {
 
     override fun serve(session: IHTTPSession): Response = when {
         session.method == Method.GET && session.uri == "/" -> newFixedLengthResponse(
             Response.Status.OK,
             "text/html; charset=utf-8",
-            SubtitleFontWebPage.html(context)
+            pageHtml(context)
         )
         session.method == Method.GET && session.uri == "/logo.png" -> serveLogo()
         session.method == Method.POST && session.uri == "/api/font" -> handleUpload(session)
@@ -36,7 +38,7 @@ class SubtitleFontUploadServer(
             ?.substringAfterLast('/')
             ?.takeIf { it.isNotBlank() }
         val length = session.headers["content-length"]?.toLongOrNull()
-        if (fileName == null || length == null || length <= 0 || length > SubtitleFonts.MAX_BYTES) {
+        if (fileName == null || length == null || length <= 0 || length > maxBytes) {
             return jsonResponse(Response.Status.BAD_REQUEST, """{"error":"invalid"}""")
         }
         val bytes = ByteArray(length.toInt())
@@ -61,10 +63,12 @@ class SubtitleFontUploadServer(
             onFontUploaded: (fileName: String, bytes: ByteArray) -> Boolean,
             logoProvider: () -> ByteArray?,
             startPort: Int = 8094,
-            maxAttempts: Int = 10
+            maxAttempts: Int = 10,
+            pageHtml: (Context) -> String = { ctx -> SubtitleFontWebPage.html(ctx) },
+            maxBytes: Int = SubtitleFonts.MAX_BYTES
         ): SubtitleFontUploadServer? {
             for (port in startPort until startPort + maxAttempts) {
-                val server = SubtitleFontUploadServer(context, onFontUploaded, logoProvider, port)
+                val server = SubtitleFontUploadServer(context, onFontUploaded, logoProvider, port, pageHtml, maxBytes)
                 if (runCatching { server.start(SOCKET_READ_TIMEOUT, false) }.isSuccess) return server
             }
             return null

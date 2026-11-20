@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -30,10 +31,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.QrCode2
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,6 +50,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -54,7 +59,12 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import android.widget.Toast
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -69,11 +79,14 @@ import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import com.nuvio.tv.LocaleCache
 import com.nuvio.tv.R
+import com.nuvio.tv.core.player.UiFontStore
+import com.nuvio.tv.domain.model.AppFont
 import com.nuvio.tv.domain.model.AppIconOption
 import com.nuvio.tv.domain.model.AppTheme
 import com.nuvio.tv.domain.model.CustomThemeColors
 import com.nuvio.tv.domain.model.SettingsUiStyle
 import com.nuvio.tv.ui.components.NuvioDialog
+import com.nuvio.tv.ui.screens.addon.QrCodeOverlay
 import com.nuvio.tv.ui.screens.detail.requestFocusAfterFrames
 import com.nuvio.tv.ui.theme.ThemeColors
 import com.nuvio.tv.ui.theme.accentBrush
@@ -318,7 +331,8 @@ fun ThemeSettingsContent(
                 SettingsActionRow(
                     title = stringResource(R.string.appearance_font),
                     subtitle = stringResource(R.string.appearance_font_subtitle),
-                    value = uiState.selectedFont.displayName,
+                    value = uiState.customFonts.firstOrNull { it.id == uiState.selectedCustomUiFontId }?.name
+                        ?: uiState.selectedFont.displayName,
                     onClick = { showFontDialog = true }
                 )
                 SettingsActionRow(
@@ -345,19 +359,10 @@ fun ThemeSettingsContent(
     }
 
     if (showFontDialog) {
-        SettingsSingleChoiceDialog(
-            title = stringResource(R.string.appearance_font_dialog_title),
-            options = uiState.availableFonts.map { font ->
-                SettingsPickerOption(font, font.displayName, titleFontFamily = getFontFamily(font))
-            },
-            selectedValue = uiState.selectedFont,
-            onOptionSelected = { font ->
-                viewModel.onEvent(ThemeSettingsEvent.SelectFont(font))
-                showFontDialog = false
-            },
-            onDismiss = { showFontDialog = false },
-            width = 400.dp,
-            maxHeight = 280.dp
+        ThemeFontPickerDialog(
+            uiState = uiState,
+            viewModel = viewModel,
+            onDismiss = { showFontDialog = false }
         )
     }
 
@@ -606,4 +611,281 @@ private fun AppTheme.localizedName(): String = when (this) {
     AppTheme.AMBER -> stringResource(R.string.theme_color_amber)
     AppTheme.ROSE -> stringResource(R.string.theme_color_rose)
     AppTheme.WHITE -> stringResource(R.string.theme_color_white)
+}
+
+@Composable
+private fun rememberUiFontFamily(fontId: String): FontFamily {
+    val context = LocalContext.current
+    val store = remember(context) { UiFontStore.get(context) }
+    return remember(fontId) {
+        store.fontFile(fontId)?.let { FontFamily(Font(it)) } ?: FontFamily.Default
+    }
+}
+
+@Composable
+private fun ThemeFontPickerDialog(
+    uiState: ThemeSettingsUiState,
+    viewModel: ThemeSettingsViewModel,
+    onDismiss: () -> Unit
+) {
+    val importState by viewModel.importState.collectAsStateWithLifecycle()
+    val customFonts = uiState.customFonts
+    val selectedCustomId = uiState.selectedCustomUiFontId
+    val selectedBuiltInIndex = if (selectedCustomId == null) {
+        uiState.availableFonts.indexOf(uiState.selectedFont)
+    } else {
+        -1
+    }
+    val selectedCustomIndex = selectedCustomId?.let { id ->
+        customFonts.indexOfFirst { it.id == id }
+    } ?: -1
+    val focusedIndex = when {
+        selectedCustomIndex >= 0 -> uiState.availableFonts.size + selectedCustomIndex
+        selectedBuiltInIndex >= 0 -> selectedBuiltInIndex
+        else -> 0
+    }
+    val focusRequester = remember { FocusRequester() }
+    val listState = rememberLazyListState(initialFirstVisibleItemIndex = focusedIndex)
+
+    LaunchedEffect(focusedIndex) {
+        focusRequester.requestFocusAfterFrames()
+    }
+
+    NuvioDialog(
+        onDismiss = onDismiss,
+        title = stringResource(R.string.appearance_font_dialog_title),
+        subtitle = stringResource(R.string.ui_font_import_desc),
+        width = 560.dp,
+        suppressFirstKeyUp = false
+    ) {
+        if (selectedCustomId != null && customFonts.none { it.id == selectedCustomId }) {
+            Text(
+                text = stringResource(R.string.ui_font_missing),
+                style = MaterialTheme.typography.bodySmall,
+                color = NuvioTheme.colors.Warning
+            )
+        }
+        LazyColumn(
+            state = listState,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 340.dp),
+            verticalArrangement = Arrangement.spacedBy(NuvioTheme.spacing.sm),
+            contentPadding = PaddingValues(vertical = NuvioTheme.spacing.xs)
+        ) {
+            itemsIndexed(
+                items = uiState.availableFonts,
+                key = { _, font -> "builtin-${font.name}" }
+            ) { index, font ->
+                ThemeFontBuiltInOption(
+                    font = font,
+                    selected = selectedCustomId == null && font == uiState.selectedFont,
+                    onClick = {
+                        viewModel.onEvent(ThemeSettingsEvent.SelectFont(font))
+                        onDismiss()
+                    },
+                    modifier = if (index == focusedIndex) Modifier.focusRequester(focusRequester) else Modifier
+                )
+            }
+            items(customFonts, key = { it.id }) { font ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(NuvioTheme.spacing.sm)
+                ) {
+                    val customIndex = uiState.availableFonts.size + customFonts.indexOf(font)
+                    UiFontOptionRow(
+                        label = font.name,
+                        fontFamily = rememberUiFontFamily(font.id),
+                        selected = font.id == selectedCustomId,
+                        onClick = {
+                            viewModel.onEvent(ThemeSettingsEvent.SelectCustomFont(font))
+                            onDismiss()
+                        },
+                        modifier = Modifier
+                            .weight(1f)
+                            .then(if (customIndex == focusedIndex) Modifier.focusRequester(focusRequester) else Modifier)
+                    )
+                    UiFontActionCard(
+                        icon = Icons.Outlined.Delete,
+                        label = stringResource(R.string.ui_font_remove, font.name),
+                        onClick = { viewModel.onEvent(ThemeSettingsEvent.RemoveCustomFont(font)) }
+                    )
+                }
+            }
+            item(key = "import") {
+                UiFontActionCard(
+                    icon = Icons.Default.QrCode2,
+                    label = stringResource(R.string.ui_font_import),
+                    showLabel = true,
+                    onClick = { viewModel.onEvent(ThemeSettingsEvent.StartUiFontImport) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+    }
+
+    if (importState.isActive) {
+        Dialog(
+            onDismissRequest = { viewModel.onEvent(ThemeSettingsEvent.StopUiFontImport) },
+            properties = DialogProperties(usePlatformDefaultWidth = false)
+        ) {
+            QrCodeOverlay(
+                qrBitmap = importState.qrCodeBitmap,
+                serverUrl = importState.serverUrl,
+                instruction = importState.error ?: stringResource(R.string.ui_font_import_qr),
+                onClose = { viewModel.onEvent(ThemeSettingsEvent.StopUiFontImport) }
+            )
+        }
+    }
+}
+
+@Composable
+private fun ThemeFontBuiltInOption(
+    font: AppFont,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .semantics {
+                role = Role.RadioButton
+                this.selected = selected
+            },
+        colors = CardDefaults.colors(
+            containerColor = if (selected) NuvioTheme.colors.FocusBackground else NuvioTheme.colors.BackgroundCard,
+            focusedContainerColor = NuvioTheme.colors.FocusBackground
+        ),
+        shape = CardDefaults.shape(RoundedCornerShape(10.dp)),
+        scale = CardDefaults.scale(focusedScale = 1f)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(NuvioTheme.spacing.lg),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = font.displayName,
+                    color = if (selected) NuvioTheme.colors.Primary else NuvioTheme.colors.TextPrimary,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontFamily = getFontFamily(font)
+                )
+            }
+            if (selected) {
+                Spacer(modifier = Modifier.width(NuvioTheme.spacing.md))
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null,
+                    tint = NuvioTheme.colors.Primary,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun UiFontOptionRow(
+    label: String,
+    fontFamily: FontFamily,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .semantics {
+                role = Role.RadioButton
+                this.selected = selected
+            },
+        colors = CardDefaults.colors(
+            containerColor = if (selected) NuvioTheme.colors.FocusBackground else NuvioTheme.colors.BackgroundCard,
+            focusedContainerColor = NuvioTheme.colors.FocusBackground
+        ),
+        shape = CardDefaults.shape(RoundedCornerShape(10.dp)),
+        scale = CardDefaults.scale(focusedScale = 1f)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = NuvioTheme.spacing.lg, vertical = NuvioTheme.spacing.md),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Aa",
+                style = MaterialTheme.typography.titleLarge,
+                fontFamily = fontFamily,
+                color = NuvioTheme.colors.TextPrimary,
+                modifier = Modifier.width(52.dp)
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyLarge,
+                color = if (selected) NuvioTheme.colors.Primary else NuvioTheme.colors.TextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f)
+            )
+            if (selected) {
+                Spacer(modifier = Modifier.width(NuvioTheme.spacing.md))
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null,
+                    tint = NuvioTheme.colors.Primary,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun UiFontActionCard(
+    icon: ImageVector,
+    label: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    showLabel: Boolean = false
+) {
+    Card(
+        onClick = onClick,
+        modifier = modifier.semantics {
+            role = Role.Button
+            contentDescription = label
+        },
+        colors = CardDefaults.colors(
+            containerColor = NuvioTheme.colors.BackgroundCard,
+            focusedContainerColor = NuvioTheme.colors.FocusBackground
+        ),
+        shape = CardDefaults.shape(RoundedCornerShape(10.dp)),
+        scale = CardDefaults.scale(focusedScale = 1f)
+    ) {
+        Row(
+            modifier = Modifier.padding(NuvioTheme.spacing.lg),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(modifier = Modifier.size(24.dp), contentAlignment = Alignment.Center) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = NuvioTheme.colors.TextPrimary,
+                    modifier = Modifier.size(22.dp)
+                )
+            }
+            if (showLabel) {
+                Spacer(modifier = Modifier.width(NuvioTheme.spacing.md))
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = NuvioTheme.colors.TextPrimary
+                )
+            }
+        }
+    }
 }

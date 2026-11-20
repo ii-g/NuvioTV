@@ -31,6 +31,7 @@ class ThemeDataStore @Inject constructor(
     private val themeKey = stringPreferencesKey("selected_theme")
     private val customThemeColorsKey = stringPreferencesKey("custom_theme_colors")
     private val fontKey = stringPreferencesKey("selected_font")
+    private val customUiFontKey = stringPreferencesKey("custom_ui_font_id")
     private val amoledModeKey = booleanPreferencesKey("amoled_mode")
     private val amoledSurfacesModeKey = booleanPreferencesKey("amoled_surfaces_mode")
     private val settingsUiStyleKey = stringPreferencesKey("settings_ui_style")
@@ -52,6 +53,12 @@ class ThemeDataStore @Inject constructor(
             } catch (e: IllegalArgumentException) {
                 AppFont.INTER
             }
+        }
+    }
+
+    val selectedCustomUiFontId: Flow<String?> = profileManager.activeProfileId.flatMapLatest { pid ->
+        factory.get(pid, FEATURE).data.map { prefs ->
+            prefs[customUiFontKey]
         }
     }
 
@@ -94,6 +101,16 @@ class ThemeDataStore @Inject constructor(
     suspend fun setFont(font: AppFont) {
         store().edit { prefs ->
             prefs[fontKey] = font.name
+        }
+    }
+
+    suspend fun setCustomUiFontId(id: String?) {
+        store().edit { prefs ->
+            if (id == null) {
+                prefs.remove(customUiFontKey)
+            } else {
+                prefs[customUiFontKey] = id
+            }
         }
     }
 
