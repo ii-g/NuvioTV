@@ -72,7 +72,7 @@
     <string name="party_share_unavailable">لا يمكن مشاركة هذا البث.</string>
     <string name="party_shared_by">شاركه %1$s</string>
     <string name="party_invite_scan">امسح بهاتفك للانضمام</string>
-    <string name="party_invite_share">أو شارك الرمز. يمكن للأصدقاء إدخاله في «مشاهدة جماعية» على أي تطبيق Nuvio.</string>
+    <string name="party_invite_share">أو شارك الرمز. يمكن للأصدقاء إدخاله في مشاهدة جماعية على أي تطبيق Nuvio.</string>
     <string name="party_invite_qr">رمز QR لدعوة المشاهدة الجماعية</string>
-    <string name="party_phone_chat_note">افتح «مشاهدة جماعية» على هاتفك بهذا الملف الشخصي للدردشة.</string>
+    <string name="party_phone_chat_note">افتح مشاهدة جماعية على هاتفك بهذا الملف الشخصي للدردشة.</string>
 </resources>
