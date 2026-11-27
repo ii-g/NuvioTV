@@ -693,7 +693,9 @@ private fun PlaybackNavHost(
                                 contentLanguage = playbackInfo.contentLanguage,
                                 profileId = playbackInfo.profileId,
                                 audioDelayMs = playbackInfo.audioDelayMs,
-                                audioDelayLanguage = playbackInfo.audioDelayLanguage
+                                audioDelayLanguage = playbackInfo.audioDelayLanguage,
+                                clearKeys = playbackInfo.clearKeys,
+                                streamType = playbackInfo.streamType
                             )
                         )
                     }
@@ -737,7 +739,9 @@ private fun PlaybackNavHost(
                                 profileId = playbackInfo.profileId,
                                 audioDelayMs = playbackInfo.audioDelayMs,
                                 audioDelayLanguage = playbackInfo.audioDelayLanguage,
-                                fromLinkCache = playbackInfo.fromLinkCache
+                                clearKeys = playbackInfo.clearKeys,
+                                fromLinkCache = playbackInfo.fromLinkCache,
+                                streamType = playbackInfo.streamType
                             )
                         ) {
                             popUpTo(Screen.Stream.route) { inclusive = true }
@@ -835,6 +839,11 @@ private fun PlaybackNavHost(
                     nullable = true
                     defaultValue = "false"
                 },
+                navArgument("streamType") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
                 navArgument("returnToDetailOnBack") {
                     type = NavType.StringType
                     nullable = true
@@ -906,6 +915,11 @@ private fun PlaybackNavHost(
                     defaultValue = null
                 },
                 navArgument("audioDelayLanguage") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
+                navArgument("clearKeys") {
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
